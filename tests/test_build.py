@@ -8,5 +8,5 @@ build = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(build)
 
 def test_build_generates_file():
-    generate_page()
+    build.generate_page()
     assert Path("dist/index.html").exists()
