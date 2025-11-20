@@ -26,10 +26,15 @@ jobs:
       - name: Build static site
         run: python build.py
 
+      - name: Prepare artifact for Pages
+        run: |
+          mkdir -p out
+          cp -r dist/* out/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: outs
 
   deploy:
     needs: build-and-test
