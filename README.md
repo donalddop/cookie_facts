@@ -1,27 +1,77 @@
-# Cookie Facts
+# 🍪 Cookie Facts
 
-This project is a simple static site generator that displays a random cookie fact each time you build the site.
+A static site generator that serves random cookie facts, demonstrating CI/CD automation with GitHub Actions and static hosting workflows.
 
-### Installation
+**Live Demo:** https://donalddop.github.io/cookie_facts/
 
-# Create virtual python environment
+## What This Demonstrates
+
+- **GitHub Actions CI/CD**: Automated build and deployment pipeline
+- **Static Site Generation**: Python-based build script that generates HTML from data
+- **GitHub Pages Deployment**: Automated publishing to gh-pages branch
+- **Clean Separation**: Data, templates, and build logic kept separate
+
+## Tech Stack
+
+- Python 3.x (build script)
+- Jinja2 (templating)
+- GitHub Actions (CI/CD)
+- GitHub Pages (hosting)
+
+## How It Works
+
+The GitHub Actions workflow automatically:
+1. Triggers on every push to `main`
+2. Sets up Python environment
+3. Installs dependencies
+4. Runs `build.py` to generate static HTML
+5. Deploys to GitHub Pages
+
+Each build randomly selects a cookie fact from `data/facts.txt` and renders it using the Jinja2 template.
+
+## Local Development
+```bash
+# Create virtual environment
 python -m venv venv
-# Activate on linux
+
+# Activate (Linux/Mac)
 source venv/bin/activate
-# Activate on Windows powershell
+
+# Activate (Windows)
 .\venv\Scripts\activate.ps1
 
-# Install requirements
+# Install dependencies
 pip install -r requirements.txt
 
-### Building the page
+# Build the site
 python build.py
-# Output is placed in dist folder
 
-### Usage
+# Output is in dist/index.html
+```
 
-Open the `dist/index.html` file in your web browser to see the cookie fact.
+## Adding New Facts
 
-### Contributing
+Add new cookie facts to `data/facts.txt` (one per line). The next deployment will automatically include them in the random rotation.
 
-To add a new cookie fact, simply add a new line to the `data/facts.txt` file.
+## Project Structure
+```
+cookie_facts/
+├── .github/workflows/    # GitHub Actions CI/CD pipeline
+├── data/                 # Cookie facts database
+├── templates/            # Jinja2 HTML templates
+├── tests/                # Test suite
+├── build.py             # Static site generator
+└── requirements.txt     # Python dependencies
+```
+
+## Why This Project?
+
+Built to learn and demonstrate:
+- Setting up automated CI/CD pipelines with GitHub Actions
+- Static site generation workflows
+- Deploying to GitHub Pages programmatically
+- Clean project architecture for static sites
+
+---
+
+*Note: The live site shows the same fact on each visit because it's static HTML generated at build time. To see a new fact, trigger a new deployment by pushing to the repo.*
