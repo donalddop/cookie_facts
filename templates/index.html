@@ -1,11 +1,165 @@
-<html>
-  <head>
-    <title>Cookie Fact</title>
-    <base href="/cookie_facts/">
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <h1>Cookie Fact of the Day</h1>
-    <p>{{FACT}}</p>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍪 Cookie Facts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .cookie {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            color: #764ba2;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .fact {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(118, 75, 162, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .counter {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cookie">🍪</div>
+        <h1>Cookie Facts</h1>
+        <div class="fact" id="fact">Loading cookie wisdom...</div>
+        <button onclick="showRandomFact()">Get Another Fact!</button>
+        <div class="counter">
+            Facts discovered: <span id="counter">0</span> / <span id="total">0</span>
+        </div>
+        <div class="footer">
+            Built with Python, Jinja2 & GitHub Actions<br>
+            <a href="https://github.com/donalddop/cookie_facts" target="_blank">View on GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        // All facts embedded from build time
+        const facts = {{ facts_json|safe }};
+        let viewedFacts = new Set();
+        let currentFactIndex = -1;
+
+        function showRandomFact() {
+            if (facts.length === 0) return;
+            
+            // Pick a random fact
+            currentFactIndex = Math.floor(Math.random() * facts.length);
+            const fact = facts[currentFactIndex];
+            
+            // Add to viewed set
+            viewedFacts.add(currentFactIndex);
+            
+            // Update UI with fade effect
+            const factElement = document.getElementById('fact');
+            factElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                factElement.textContent = fact;
+                factElement.style.opacity = '1';
+            }, 200);
+            
+            // Update counter
+            document.getElementById('counter').textContent = viewedFacts.size;
+            document.getElementById('total').textContent = facts.length;
+        }
+
+        // Show random fact on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('total').textContent = facts.length;
+            showRandomFact();
+        });
+
+        // Smooth fade transition
+        document.getElementById('fact').style.transition = 'opacity 0.2s ease-in-out';
+    </script>
+</body>
 </html>
